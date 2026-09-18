@@ -1,23 +1,47 @@
-name: Build and deploy widget
+# Save this in the repo at:  .github/workflows/build.yml
+# Replaces the earlier build-only version.
+#
+# Three things happen here, in order:
+#   1. On the DMAR check schedule (or a manual run with the box ticked), look
+#      for a newer DMAR report and rewrite data.json from it.
+#   2. Build index.html from data.json.
+#   3. Publish to GitHub Pages.
+#
+# Triggers:
+#   push            - you edited data.json or template.html; rebuild and publish
+#   daily cron      - rebuild so the "data may be stale" notice stays accurate
+#   5th/8th/11th    - check DMAR for a new monthly report
+#   manual          - Actions tab, "Run workflow"
+#
+# Requires one repository secret: ANTHROPIC_API_KEY
+#   Settings -> Secrets and variables -> Actions -> New repository secret
+
+name: Update and publish widget
 
 on:
   push:
     branches: [main]
   schedule:
-    - cron: "0 13 * * *"
+    - cron: "0 13 * * *"          # daily rebuild, ~7 AM Mountain
+    - cron: "0 17 5,8,11 * *"     # DMAR check, ~11 AM Mountain
   workflow_dispatch:
+    inputs:
+      check_dmar:
+        description: "Also check DMAR for a newer report"
+        type: boolean
+        default: false
 
 permissions:
-  contents: read
+  contents: write     # needed to commit the refreshed data.json
   pages: write
   id-token: write
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  update-build-deploy:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -30,6 +54,30 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+
+      # Only on the DMAR schedule, or a manual run with the box ticked.
+      # "Nothing new" exits 0, so the run stays green on the two months' runs
+      # that are expected to find nothing.
+      - name: Check DMAR for a newer report
+        if: github.event.schedule == '0 17 5,8,11 * *' || inputs.check_dmar
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node update-data.js
+
+      - name: Commit data.json if it changed
+        if: github.event.schedule == '0 17 5,8,11 * *' || inputs.check_dmar
+        run: |
+          if git diff --quiet -- data.json; then
+            echo "data.json unchanged, nothing to commit"
+          else
+            MONTH=$(node -e "console.log(require('./data.json').data_month_label)")
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data.json
+            git commit -m "Update to $MONTH DMAR data"
+            git push
+            echo "Committed $MONTH"
+          fi
 
       - name: Build index.html from data.json
         run: node build.js --out _site
