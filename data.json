@@ -2,6 +2,7 @@
   "schema_version": 1,
   "market": "Denver Metro",
   "market_note": "11-county Denver metro area",
+  "presented_by": "The Neir Team",
   "source": {
     "name": "Denver Metro Association of REALTORS®",
     "short": "DMAR",
