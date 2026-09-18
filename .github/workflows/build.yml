@@ -1,5 +1,4 @@
 # Save this in the repo at:  .github/workflows/build.yml
-# Replaces the earlier build-only version.
 #
 # Three things happen here, in order:
 #   1. On the DMAR check schedule (or a manual run with the box ticked), look
@@ -15,6 +14,15 @@
 #
 # Requires one repository secret: ANTHROPIC_API_KEY
 #   Settings -> Secrets and variables -> Actions -> New repository secret
+#
+# Action versions are current as of September 2026 and all run on Node 24.
+# node-version is "lts/*" rather than a pinned number so this keeps tracking
+# supported Node without needing edits; build.js and update-data.js use only
+# long-stable APIs.
+#
+# runs-on stays "ubuntu-latest" on purpose. Pinning a specific Ubuntu version
+# avoids surprise changes but guarantees an eventual end-of-life break, which is
+# the opposite of what this workflow is for.
 
 name: Update and publish widget
 
@@ -48,16 +56,16 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: "20"
+          node-version: "lts/*"
 
       # Only on the DMAR schedule, or a manual run with the box ticked.
-      # "Nothing new" exits 0, so the run stays green on the two months' runs
-      # that are expected to find nothing.
+      # "Nothing new" exits 0, so the run stays green on the two runs each
+      # month that are expected to find nothing.
       - name: Check DMAR for a newer report
         if: github.event.schedule == '0 17 5,8,11 * *' || inputs.check_dmar
         env:
@@ -83,13 +91,13 @@ jobs:
         run: node build.js --out _site
 
       - name: Configure Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Upload the built site
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
       - name: Deploy to Pages
         id: deploy
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
