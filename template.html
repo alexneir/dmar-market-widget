@@ -72,7 +72,9 @@
   .stat-value .unit{font-size:15px;font-weight:500;color:var(--ink-2);margin-left:3px;letter-spacing:0}
   .stat-value.is-pos{color:var(--pos)} .stat-value.is-neg{color:var(--neg)} .stat-value.is-neu{color:var(--neu)}
   .stat-deltas{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:9px;font-size:12.5px;font-variant-numeric:tabular-nums}
-  .delta{display:inline-flex;align-items:baseline;gap:4px;color:var(--ink-3)}
+  /* nowrap keeps "17.35% vs. Aug 2025" together; the flex container wraps the
+     whole item to its own line instead of breaking it in half on narrow cards */
+  .delta{display:inline-flex;align-items:baseline;gap:4px;color:var(--ink-3);white-space:nowrap}
   .delta b{font-weight:650;letter-spacing:-.01em}
   .up b{color:var(--pos)} .down b{color:var(--neg)} .flat b{color:var(--neu)}
 
