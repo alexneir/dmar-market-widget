@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "market": "Denver Metro",
+  "market_note": "11-county Denver metro area",
+  "source": {
+    "name": "Denver Metro Association of REALTORS®",
+    "short": "DMAR",
+    "report": "Market Trends Report",
+    "url": "https://www.dmarealtors.com/market-trends-reports",
+    "month_url": "https://www.dmarealtors.com/news/market-trends/dmar-real-estate-market-trends-report-august-2026"
+  },
+  "data_month": "2026-08",
+  "data_month_label": "August 2026",
+  "published": "2026-09-03",
+  "last_updated": "2026-09-18",
+  "next_expected": "2026-10-06",
+  "metrics": [
+    {
+      "key": "median_close_price",
+      "label": "Median Close Price",
+      "format": "currency",
+      "value": 594495,
+      "mom": -1.74,
+      "yoy": 0,
+      "yoy_note": "unchanged",
+      "polarity": "positive_up"
+    },
+    {
+      "key": "active_listings",
+      "label": "Active Listings",
+      "format": "count",
+      "value": 13080,
+      "mom": -0.27,
+      "yoy": 0.16,
+      "polarity": "neutral"
+    },
+    {
+      "key": "closed_sales",
+      "label": "Closed Sales",
+      "format": "count",
+      "value": null,
+      "mom": -18.99,
+      "yoy": -17.35,
+      "polarity": "positive_up"
+    },
+    {
+      "key": "days_in_mls",
+      "label": "Median Days in MLS",
+      "format": "days",
+      "value": 27,
+      "prev_value": 21,
+      "prev_year_value": 30,
+      "mom": 28.57,
+      "yoy": -10,
+      "polarity": "positive_down"
+    },
+    {
+      "key": "ytd_median_price",
+      "label": "Year to Date Median",
+      "format": "currency",
+      "value": 599990,
+      "mom": null,
+      "yoy": 0.17,
+      "polarity": "positive_up"
+    },
+    {
+      "key": "ytd_closings",
+      "label": "Year to Date Closings",
+      "format": "count",
+      "value": null,
+      "mom": null,
+      "yoy": -3.49,
+      "polarity": "positive_up"
+    }
+  ],
+  "notes": [
+    "Detached inventory is down 4.21 percent year over year, while attached inventory is up 9.94 percent.",
+    "Attached homes are taking a median of 45 days to sell, against 24 days for detached.",
+    "Detached median prices held essentially flat year over year; attached prices fell 4.87 percent."
+  ],
+  "history": [
+    { "month": "2026-01", "median_close_price": 569500, "active_listings": 8228, "derived": false },
+    { "month": "2026-02", "median_close_price": 575000, "active_listings": 8988, "derived": true },
+    { "month": "2026-03", "median_close_price": 590000, "active_listings": 9846, "derived": false },
+    { "month": "2026-04", "median_close_price": 605000, "active_listings": 11539, "derived": false },
+    { "month": "2026-05", "median_close_price": 615000, "active_listings": 12259, "derived": false },
+    { "month": "2026-06", "median_close_price": 614500, "active_listings": 12744, "derived": true },
+    { "month": "2026-07", "median_close_price": 605000, "active_listings": 13115, "derived": false },
+    { "month": "2026-08", "median_close_price": 594495, "active_listings": 13080, "derived": false }
+  ]
+}
